@@ -2,7 +2,6 @@
   <img src="./flagship-logo.png" alt="Flagship" width="400" />
 
 [![npm version](https://img.shields.io/npm/v/@jayalfredprufrock/flagship)](https://www.npmjs.com/package/@jayalfredprufrock/flagship)
-[![license](https://img.shields.io/npm/l/@jayalfredprufrock/flagship)](./LICENSE)
 [![gzip size](https://img.shields.io/bundlephobia/minzip/@jayalfredprufrock/flagship)](https://bundlephobia.com/package/@jayalfredprufrock/flagship)
 
 </div>
