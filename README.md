@@ -1,9 +1,10 @@
 <div align="center">
   <img src="./flagship-logo.png" alt="Flagship" width="400" />
 
-  [![npm version](https://img.shields.io/npm/v/@jayalfredprufrock/flagship)](https://www.npmjs.com/package/@jayalfredprufrock/flagship)
-  [![license](https://img.shields.io/npm/l/@jayalfredprufrock/flagship)](./LICENSE)
-  [![gzip size](https://img.shields.io/bundlephobia/minzip/@jayalfredprufrock/flagship)](https://bundlephobia.com/package/@jayalfredprufrock/flagship)
+[![npm version](https://img.shields.io/npm/v/@jayalfredprufrock/flagship)](https://www.npmjs.com/package/@jayalfredprufrock/flagship)
+[![license](https://img.shields.io/npm/l/@jayalfredprufrock/flagship)](./LICENSE)
+[![gzip size](https://img.shields.io/bundlephobia/minzip/@jayalfredprufrock/flagship)](https://bundlephobia.com/package/@jayalfredprufrock/flagship)
+
 </div>
 
 ---
@@ -23,14 +24,14 @@ npm install @jayalfredprufrock/flagship
 For common cases, use a shorthand string instead of a full flag definition:
 
 ```ts
-import { parseFlags } from '@jayalfredprufrock/flagship';
+import { parseFlags } from "@jayalfredprufrock/flagship";
 
 const flags = await parseFlags({
-  name:    'string*',   // string  (required)
-  env:     'string',    // string | undefined
-  port:    'number',    // number | undefined
-  verbose: 'boolean',   // boolean | undefined
-  tags:    'string[]',  // string[] | undefined
+  name: "string*", // string  (required)
+  env: "string", // string | undefined
+  port: "number", // number | undefined
+  verbose: "boolean", // boolean | undefined
+  tags: "string[]", // string[] | undefined
 });
 ```
 
@@ -39,31 +40,31 @@ The `*` suffix marks a flag as required. The `[]` suffix accepts multiple values
 ### Full example
 
 ```ts
-import { parseFlags } from '@jayalfredprufrock/flagship';
+import { parseFlags } from "@jayalfredprufrock/flagship";
 
 const flags = await parseFlags(
   {
     env: {
-      parse: (value) => value as 'development' | 'production' | 'test',
+      parse: (value) => value as "development" | "production" | "test",
       required: true,
       validate: (value) => {
-        if (!['development', 'production', 'test'].includes(value)) {
+        if (!["development", "production", "test"].includes(value)) {
           throw new Error(`Invalid --env: ${value}`);
         }
       },
     },
     port: {
       parse: (value) => parseInt(value, 10),
-      default: (ctx) => (ctx.flags.env === 'production' ? 80 : 3000),
+      default: (ctx) => (ctx.flags.env === "production" ? 80 : 3000),
     },
     verbose: {
-      type: 'boolean',
+      type: "boolean",
       parse: Boolean,
-      short: 'v',
+      short: "v",
     },
     outputDir: {
       parse: async (value) => resolveOutputDir(value),
-      default: './dist',
+      default: "./dist",
     },
   },
   { allowPositionals: true },
@@ -95,17 +96,18 @@ camelCase flag names are automatically aliased to kebab-case — `outputDir` is 
 
 ```ts
 interface FlagDef<Input, Output> {
-  parse:     (input: Input, context: FlagContext) => Output | Promise<Output>;
-  type?:     'string' | 'boolean'; // default: 'string'
-  multiple?: boolean;              // accept repeated flag values
-  required?: boolean;              // throw if not provided and no default resolves
-  short?:    string;               // single-char alias, e.g. 'v' → -v
-  default?:  Output | ((context: FlagContext) => Output | Promise<Output>);
+  parse: (input: Input, context: FlagContext) => Output | Promise<Output>;
+  type?: "string" | "boolean"; // default: 'string'
+  multiple?: boolean; // accept repeated flag values
+  required?: boolean; // throw if not provided and no default resolves
+  short?: string; // single-char alias, e.g. 'v' → -v
+  default?: Output | ((context: FlagContext) => Output | Promise<Output>);
   validate?: (output: Output, context: FlagContext) => void | Promise<void>;
 }
 ```
 
 `Input` is inferred automatically:
+
 - `string` when `type` is `'string'` (default)
 - `boolean` when `type` is `'boolean'`
 - `string[]` / `boolean[]` when `multiple: true`
@@ -120,8 +122,8 @@ Throw from `validate` to signal an invalid value. Throwing from `parse` is also 
 
 ```ts
 interface FlagContext {
-  name:  string;               // name of the flag being processed
-  flags: Record<string, any>;  // flags fully resolved so far (definition order)
+  name: string; // name of the flag being processed
+  flags: Record<string, any>; // flags fully resolved so far (definition order)
 }
 ```
 
@@ -133,13 +135,13 @@ Passed as the second argument to `parse` and `validate`, and as the sole argumen
 
 All fields from Node.js [`ParseArgsConfig`](https://nodejs.org/api/util.html#utilparseargsconfig) except `options`:
 
-| Option | Default | Description |
-|---|---|---|
-| `args` | `process.argv.slice(2)` | Override the argv to parse (useful in tests) |
-| `allowPositionals` | `false` | Allow positional arguments |
-| `allowNegative` | `true` | Allow `--no-<flag>` negation syntax |
-| `strict` | `true` | Throw on unknown flags |
-| `tokens` | `false` | Include token metadata in parse output |
+| Option             | Default                 | Description                                  |
+| ------------------ | ----------------------- | -------------------------------------------- |
+| `args`             | `process.argv.slice(2)` | Override the argv to parse (useful in tests) |
+| `allowPositionals` | `false`                 | Allow positional arguments                   |
+| `allowNegative`    | `true`                  | Allow `--no-<flag>` negation syntax          |
+| `strict`           | `true`                  | Throw on unknown flags                       |
+| `tokens`           | `false`                 | Include token metadata in parse output       |
 
 ---
 
@@ -147,20 +149,20 @@ All fields from Node.js [`ParseArgsConfig`](https://nodejs.org/api/util.html#uti
 
 Shorthand strings expand to a predefined `FlagDef`. The `*` suffix sets `required: true`; the `[]` suffix sets `multiple: true`.
 
-| Shorthand | Output type |
-|---|---|
-| `'string'` | `string \| undefined` |
-| `'string*'` | `string` |
-| `'string[]'` | `string[] \| undefined` |
-| `'string[]*'` | `string[]` |
-| `'boolean'` | `boolean \| undefined` |
-| `'boolean*'` | `boolean` |
-| `'boolean[]'` | `boolean[] \| undefined` |
-| `'boolean[]*'` | `boolean[]` |
-| `'number'` | `number \| undefined` |
-| `'number*'` | `number` |
-| `'number[]'` | `number[] \| undefined` |
-| `'number[]*'` | `number[]` |
+| Shorthand      | Output type              |
+| -------------- | ------------------------ |
+| `'string'`     | `string \| undefined`    |
+| `'string*'`    | `string`                 |
+| `'string[]'`   | `string[] \| undefined`  |
+| `'string[]*'`  | `string[]`               |
+| `'boolean'`    | `boolean \| undefined`   |
+| `'boolean*'`   | `boolean`                |
+| `'boolean[]'`  | `boolean[] \| undefined` |
+| `'boolean[]*'` | `boolean[]`              |
+| `'number'`     | `number \| undefined`    |
+| `'number*'`    | `number`                 |
+| `'number[]'`   | `number[] \| undefined`  |
+| `'number[]*'`  | `number[]`               |
 
 Number shorthands parse the raw string value and throw if it is not a valid number.
 
