@@ -31,6 +31,7 @@
     "prepare": "vp config"
   },
   "devDependencies": {
+    "@semantic-release/exec": "^7.1.0",
     "@tsconfig/node24": "^24.0.4",
     "@types/node": "^24.12.0",
     "@typescript/native-preview": "7.0.0-dev.20260328.1",
