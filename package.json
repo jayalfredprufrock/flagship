@@ -1,16 +1,16 @@
 {
   "name": "@jayalfredprufrock/flagship",
   "version": "0.0.0-semantically-released",
-  "description": "A starter for creating a TypeScript package.",
-  "homepage": "https://github.com/author/library#readme",
+  "description": "Tiny type-safe flag parser for node CLIs.",
+  "homepage": "https://github.com/jayalfredprufrock/flagship#readme",
   "bugs": {
-    "url": "https://github.com/author/library/issues"
+    "url": "https://github.com/jayalfredprufrock/flagship/issues"
   },
   "license": "MIT",
-  "author": "Author Name <author.name@mail.com>",
+  "author": "Andrew Smiley <jayalfredprufrock@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/author/library.git"
+    "url": "git+https://github.com/jayalfredprufrock/flagship.git"
   },
   "files": [
     "dist"
@@ -31,7 +31,6 @@
     "prepare": "vp config"
   },
   "devDependencies": {
-    "@semantic-release/exec": "^7.1.0",
     "@tsconfig/node24": "^24.0.4",
     "@types/node": "^24.12.0",
     "@typescript/native-preview": "7.0.0-dev.20260328.1",
